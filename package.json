@@ -1,0 +1,15 @@
+{
+  "name": "todocustom",
+  "version": "1.0.0",
+  "description": "Todo App using MERN Stack",
+  "main": "server.js",
+  "scripts": {
+    "start" : "node server.js"
+  },
+  "author": "Saud",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.28"
+  }
+}
