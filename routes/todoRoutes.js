@@ -35,7 +35,8 @@ router.delete('/:id' , (req , res) => {
 //  Update Todo
 router.put('/:id', (req , res) => {
     Todo.findByIdAndUpdate(req.params.id , {name : req.body.name} , {new : true})
-        .then(res.json({success : true}))
+        //.then(res.json({success : true}))
+        .then((todo) => res.json(todo))
         .catch(err => res.json({success : false}).status(404))      // Check
 });
 
