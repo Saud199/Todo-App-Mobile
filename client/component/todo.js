@@ -29,7 +29,7 @@ class Todo extends Component {
     getTodo() {
         const { todoArray } = this.state;
      
-        axios.get('https://tododb-server1.herokuapp.com/api/todoDB/')
+        axios.get('https://tododb-server2.herokuapp.com/api/todoDB/')
              .then(res => {
 
                 for(var i=0;i<res.data.length;i++) {
@@ -59,13 +59,20 @@ class Todo extends Component {
                 name : inputTask
             }
 
-            axios.post('https://tododb-server1.herokuapp.com/api/todoDB/' , newTodo)
-                .then(
+            axios.post('https://tododb-server2.herokuapp.com/api/todoDB/' , newTodo)
+                .then((res) => {
                     Toast.show({
-                         text: "Task has been added, please swipe down to refresh.",
+                         text: "Task has been added.",
                          duration: 5000
                     })
-                )
+
+                    var obj = {
+                        id : res.data._id,
+                        name : res.data.name,
+                        date : res.data.added_date
+                    }
+                    this.setState({todoArray : this.state.todoArray.concat(obj)})
+                })
                 
             this.setState({inputTask : ''})
             
@@ -91,7 +98,7 @@ class Todo extends Component {
                 },
                 {
                     text: "Yes, delete it", onPress: () => {
-                        axios.delete('https://tododb-server1.herokuapp.com/api/todoDB/'+todoArray[i].id)
+                        axios.delete('https://tododb-server2.herokuapp.com/api/todoDB/'+todoArray[i].id)
                         this.setState({todoArray: this.state.todoArray.filter(todo => todo.id != todoArray[i].id)})
                         Toast.show({
                             text: "Your task has been deleted.",
@@ -128,13 +135,23 @@ class Todo extends Component {
         }
 
         if (updatedInputTask.length > 0) {
-            axios.put('https://tododb-server1.herokuapp.com/api/todoDB/'+todoArray[updateIndex].id , updatedTodo)
-                 .then(
+            axios.put('https://tododb-server2.herokuapp.com/api/todoDB/'+todoArray[updateIndex].id , updatedTodo)
+                 .then((res) => {
                     Toast.show({
-                        text: "Task has been updated, please swipe down to refresh.",
+                        text: "Task has been updated",
                         duration: 5000
                    })
-                 )
+
+                   var obj = {
+                        id : res.data._id,
+                        name : res.data.name,
+                        date : res.data.added_date
+                    }
+
+                    this.state.todoArray.splice( updateIndex , 1 , obj )
+                    this.setState({todoArray})
+
+                 })
             this.setState({updatedInputTask : '', updateIndex : '', updateBox : false})
         }
         else {
